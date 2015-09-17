@@ -8,6 +8,7 @@ var exes = [];
 var board = [];
 
 var c = document.getElementById("myCanvas");
+var game_status = document.getElementById("game_status");
 var ctx = c.getContext("2d");
 
 var X_turn = true;
@@ -99,7 +100,7 @@ function handle_click(event){
         zeroes[x][y] = 1;
         X_turn = true;
     }
-    draw_pieces();
+    tick();
 }
 
 function init_board() {
@@ -108,13 +109,32 @@ function init_board() {
     draw_rows();
     draw_pieces();
     c.addEventListener('click', handle_click, false);
+    game_status.textContent = "GAME STARTED"
 }
 
 function check_win(){
+    var i;
+    var j;
+    var ans;
+    for(i=0;i<num_squares;i++){
+        for(j=0;j<num_squares;j++){
+            if(board[i][j] == 'X'){
+                ans = check_for_pattern(['X','X','X','X','X'],'X',j,i)
+            }
+            else if(board[i][j] == 'O') {
+                ans = check_for_pattern(['O', 'O', 'O', 'O', 'O'], 'O', j, i)
+            }
+            if(ans){
+                return true;
+            }
+        }
+    }
 
 }
 
 function tick(){
     draw_pieces();
-    check_win();
+    if (check_win()){
+        game_status.textContent = "GAME OVER"
+    }
 }
