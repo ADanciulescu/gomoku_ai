@@ -32,19 +32,8 @@ function check_for_pattern(pattern, XorO, row, col){
 
 
 
-    // horizontal check
-    var box_index = 0;
-    var box_offset =  Math.max(col - ((box_size-1)/2), 0);
-    var data = [];
-    while (box_index < box_size-pattern.length){
-        i = 0;
-        for(i = 0; i<pattern.length; i++){
-            data[i] =  board[box_offset+box_index+i][row] ;
-        }
-        if(data.equals(pattern)){
-            return true
-        }
-        box_index++;
+    if (horizontal_check(pattern,box_size,col,row)){
+        return true;
     }
 
     //vertical check
@@ -114,5 +103,22 @@ function find_last_occurance(arr, XorO){
         if (arr[i] == XorO) {
             return i;
         }
+    }
+}
+
+function horizontal_check(pattern,box_size,col,row){
+    // horizontal check
+    var box_index = 0;
+    var box_offset =  Math.max(col - ((box_size-1)/2), 0);
+    var data = [];
+    while (box_index < box_size-pattern.length){
+        i = 0;
+        for(i = 0; i<pattern.length; i++){
+            data[i] =  board[box_offset+box_index+i][row] ;
+        }
+        if(data.equals(pattern)){
+            return true
+        }
+        box_index++;
     }
 }
