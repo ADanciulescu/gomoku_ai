@@ -1,6 +1,13 @@
 init_board();
 
-
+function draw_connections(){
+  var i;
+  ctx.strokeStyle = '#ff0000';
+  for(i = 0; i < X_connections.length;i++){
+    X_connections[i].draw();
+  }
+  ctx.strokeStyle = '#000000';
+}
 
 function draw_columns(){
     var x_val = 0;
@@ -123,7 +130,7 @@ function check_win(){
 function tick(){
     draw_pieces();
     check_board_connections();
-    list_connections();
+    list_X_connections();
     if (check_win()){
         game_status.textContent = "GAME OVER"
     }

@@ -1,30 +1,31 @@
-var two_X_patterns = [['_','X','X','_'], ['_','X','_','X','_']];
-
+//var three_X_patterns = 
 function check_board_connections(){
   var i;
   var j;
   var k;
   
   //reset all connections each time we check board
-  connections = [];
+  X_connections = [];
   for (i = 0; i < num_squares; i++){
     for(j=0; j < num_squares; j++){
       for(k=0; k< two_X_patterns.length; k++){
-        horizontal_check(two_X_patterns[k], i, j);
+        horizontal_check('X',two_X_patterns[k], i, j);
+        vertical_check('X',two_X_patterns[k], i, j);
       }
     }
   }
   remove_duplicates();
+  draw_connections();
 }
 
 function remove_duplicates(){
   var i = 0;
   var j = 0;
 
-  for(i = 0;i < connections.length; i++){
-    for(j = i+1; j< connections.length; j++){
-      if(connections[i].equals(connections[j])){
-        connections.splice(j, 1);
+  for(i = 0;i < X_connections.length; i++){
+    for(j = i+1; j< X_connections.length; j++){
+      if(X_connections[i].equals(X_connections[j])){
+        X_connections.splice(j, 1);
       }     
     }
   }
@@ -113,7 +114,7 @@ function find_last_occurance(arr, XorO){
 }
 
 //checks if the symbol at col,row is part of the pattern
-function horizontal_check(pattern,row,col){
+function horizontal_check(type,pattern,row,col){
   var i;
   for (i=0;i<pattern.length; i++){
     // make sure pattern lines up  with the symbol at board[col][row]
@@ -121,15 +122,39 @@ function horizontal_check(pattern,row,col){
     // __X___
     // ____X_
     var array_to_compare;
-    if ((pattern[i] == 'X' || pattern[i] == 'O') && ( pattern[i] == board[row][col])){
+
+    if ((pattern[i] == type) && ( pattern[i] == board[row][col])){
       array_to_compare = cut_array('h', row, col-i,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('h', pattern, row, col-i);
-        connections.push(con); 
+        if (type == 'X'){
+          X_connections.push(con); 
+        }
+        else{
+        }
       }     
     }
   }
 }
+
+function vertical_check(type, pattern,row,col){
+  var i;
+  for (i=0;i<pattern.length; i++){
+    var array_to_compare;
+    if ((pattern[i] == type) && ( pattern[i] == board[row][col])){
+      array_to_compare = cut_array('v', row-i, col,  pattern.length);
+      if(pattern.equals(array_to_compare)){
+        con = new connection('v', pattern, row-i, col);
+        if (type == 'X'){
+          X_connections.push(con); 
+        }
+        else{
+        }
+      }     
+    }
+  }
+}
+
 
 // cut out a 1 dimensional array from the board
 //cut types: h = horizontal, v = vertical, / = diagonal, \ = diagonal

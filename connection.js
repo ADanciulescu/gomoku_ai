@@ -1,10 +1,10 @@
 
-function list_connections(){
+function list_X_connections(){
   var i;
 
   print_connection_string = "";
-  for (i = 0; i<connections.length;i++){
-    connections[i].print();
+  for (i = 0; i<X_connections.length;i++){
+    X_connections[i].print();
   }
 }
 
@@ -18,8 +18,20 @@ function connection(type, pattern, row, col){
     print_connection_string += this.type + " ";
     print_connection_string += this.pattern + " ";
     print_connection_string +=  this.row.toString() + " ";
-    print_connection_string +=  this.row.toString() + "\n"; 
+    print_connection_string +=  this.col.toString() + "\n"; 
     print_connections.textContent = print_connection_string;
+  }
+  this.draw = function() {
+    if(this.type == 'h'){
+      ctx.moveTo(this.col*square_size,this.row*square_size + square_size/2);
+      ctx.lineTo((this.col+this.pattern.length)*square_size , this.row * square_size + square_size/2);
+      ctx.stroke(); 
+    }
+    else if (this.type == 'v'){
+      ctx.moveTo(this.col*square_size + square_size/2,this.row*square_size);
+      ctx.lineTo((this.col+0.5)*square_size , (this.row + this.pattern.length) * square_size);
+      ctx.stroke(); 
+    }
   }
 }
 
