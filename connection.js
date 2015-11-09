@@ -22,6 +22,9 @@ function connection(type, pattern, row, col){
     print_connections.textContent = print_connection_string;
   }
   this.draw = function() {
+
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff0000';
     if(this.type == 'h'){
       ctx.moveTo(this.col*square_size,this.row*square_size + square_size/2);
       ctx.lineTo((this.col+this.pattern.length)*square_size , this.row * square_size + square_size/2);
@@ -32,6 +35,17 @@ function connection(type, pattern, row, col){
       ctx.lineTo((this.col+0.5)*square_size , (this.row + this.pattern.length) * square_size);
       ctx.stroke(); 
     }
+    else if (this.type == '/'){
+      ctx.moveTo(this.col*square_size,(this.row+1)*square_size );
+      ctx.lineTo((this.col + this.pattern.length)*square_size , (this.row - this.pattern.length + 1) * square_size);
+      ctx.stroke();
+    }
+    else{
+      ctx.moveTo(this.col*square_size ,this.row*square_size );
+      ctx.lineTo((this.col + this.pattern.length)*square_size , (this.row + this.pattern.length ) * square_size);
+      ctx.stroke();
+    }
+  ctx.strokeStyle = '#000000';
   }
 }
 

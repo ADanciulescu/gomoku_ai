@@ -52,7 +52,10 @@ function print_array(a){
   window.alert("\n");
 }
 
-
-var weak_three_X_patterns = [['O','X','X','X','_'],['_','X','X','X','O'],['_','X','X','_','X','O'],['O','X','X','_','X','_'],['_','X','_','X','X','O'],['O','X','_','X','X','_']]
+var five_X_patterns = [['X','X','X','X','X']];
+var strong_four_X_patterns = [['_','X','X','X','X','_']];
+var weak_four_X_patterns = [['X','X','X','X'],['X','X','_', 'X', 'X'],['X','_','X', 'X', 'X'], ['X','X','X','_','X']];
+var strong_three_X_patterns = [['_','X','X','X','_'], ['_','X','X','_','X','_'],['_','X','_', 'X', 'X', '_']];
+var weak_three_X_patterns = [['O','X','X','X','_'],['_','X','X','X','O'],['_','X','X','_','X','O'],['O','X','X','_','X','_'],['_','X','_','X','X','O'],['O','X','_','X','X','_']];
 var two_X_patterns = [['_','X','X','_'], ['_','X','_','X','_']];
 

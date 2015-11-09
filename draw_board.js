@@ -2,30 +2,31 @@ init_board();
 
 function draw_connections(){
   var i;
-  ctx.strokeStyle = '#ff0000';
   for(i = 0; i < X_connections.length;i++){
     X_connections[i].draw();
   }
-  ctx.strokeStyle = '#000000';
+  ctx.save();
 }
 
 function draw_columns(){
     var x_val = 0;
     while (x_val <= width) {
-        ctx.moveTo(x_val,0);
-        ctx.lineTo(x_val,height);
-        ctx.stroke();
-        x_val = x_val + width/num_squares;
+      ctx.beginPath();  
+      ctx.moveTo(x_val,0);
+      ctx.lineTo(x_val,height);
+      ctx.stroke();
+      x_val = x_val + width/num_squares;
     }
 }
 
 function draw_rows(){
     var y_val = 0;
     while (y_val <= height) {
-        ctx.moveTo(0, y_val);
-        ctx.lineTo(600,y_val);
-        ctx.stroke();
-        y_val = y_val + height/num_squares;
+      ctx.beginPath();  
+      ctx.moveTo(0, y_val);
+      ctx.lineTo(600,y_val);
+      ctx.stroke();
+      y_val = y_val + height/num_squares;
     }
 }
 
@@ -47,6 +48,8 @@ function init_pieces(){
 function draw_pieces(){
     var i = 0;
     var j = 0;
+    
+    ctx.lineWidth=2;
     for(i=0;i<num_squares;i++){
         for(j = 0; j<num_squares;j++){
             if (board[i][j] == "X"){
@@ -57,11 +60,13 @@ function draw_pieces(){
             }
         }
     }
+    ctx.lineWidth=1;
 }
 
 function draw_X(y,x){
 
     // draw \
+    ctx.beginPath();
     ctx.moveTo(x*square_size + (square_size/4), y*square_size + (square_size/4));
     ctx.lineTo(x*square_size + (3*square_size/4), y*square_size + (3*square_size/4));
     ctx.stroke();

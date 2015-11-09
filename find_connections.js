@@ -8,10 +8,10 @@ function check_board_connections(){
   X_connections = [];
   for (i = 0; i < num_squares; i++){
     for(j=0; j < num_squares; j++){
-      for(k=0; k< two_X_patterns.length; k++){
-        horizontal_check('X',two_X_patterns[k], i, j);
-        vertical_check('X',two_X_patterns[k], i, j);
-      }
+      check_all('X','h', i,j);
+      check_all('X','v', i,j);
+      check_all('X','/', i,j);
+      check_all('X','\\', i,j);
     }
   }
   remove_duplicates();
@@ -23,7 +23,7 @@ function remove_duplicates(){
   var j = 0;
 
   for(i = 0;i < X_connections.length; i++){
-    for(j = i+1; j< X_connections.length; j++){
+    for(j = 0; j< X_connections.length; j++){
       if(X_connections[i].equals(X_connections[j])){
         X_connections.splice(j, 1);
       }     
@@ -114,7 +114,7 @@ function find_last_occurance(arr, XorO){
 }
 
 //checks if the symbol at col,row is part of the pattern
-function horizontal_check(type,pattern,row,col){
+function horizontal_check(XorO,pattern,row,col){
   var i;
   for (i=0;i<pattern.length; i++){
     // make sure pattern lines up  with the symbol at board[col][row]
@@ -123,38 +123,83 @@ function horizontal_check(type,pattern,row,col){
     // ____X_
     var array_to_compare;
 
-    if ((pattern[i] == type) && ( pattern[i] == board[row][col])){
+    if ((pattern[i] == XorO) && ( pattern[i] == board[row][col])){
       array_to_compare = cut_array('h', row, col-i,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('h', pattern, row, col-i);
-        if (type == 'X'){
+        if (XorO == 'X'){
           X_connections.push(con); 
+          return true;
         }
         else{
         }
       }     
     }
   }
+  return false;
 }
 
-function vertical_check(type, pattern,row,col){
+function vertical_check(XorO, pattern,row,col){
   var i;
   for (i=0;i<pattern.length; i++){
     var array_to_compare;
-    if ((pattern[i] == type) && ( pattern[i] == board[row][col])){
+    if ((pattern[i] == XorO) && ( pattern[i] == board[row][col])){
       array_to_compare = cut_array('v', row-i, col,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('v', pattern, row-i, col);
-        if (type == 'X'){
+        if (XorO  == 'X'){
           X_connections.push(con); 
+          return true;
         }
         else{
         }
       }     
     }
   }
+  return false;
 }
 
+// diagonal /
+function diagonal_climb_check(XorO, pattern,row,col){
+  var i;
+  for (i=0;i<pattern.length; i++){
+    var array_to_compare;
+    if ((pattern[i] == XorO) && ( pattern[i] == board[row][col])){
+      array_to_compare = cut_array('/', row+i, col-i,  pattern.length);
+      if(pattern.equals(array_to_compare)){
+        con = new connection('/', pattern, row+i, col-i);
+        if (XorO == 'X'){
+          X_connections.push(con); 
+          return true;
+        }
+        else{
+        }
+      }     
+    }
+  }
+  return false;
+}
+
+// diagonal \
+function diagonal_fall_check(XorO, pattern,row,col){
+  var i;
+  for (i=0;i<pattern.length; i++){
+    var array_to_compare;
+    if ((pattern[i] == XorO) && ( pattern[i] == board[row][col])){
+      array_to_compare = cut_array('\\', row-i, col-i,  pattern.length);
+      if(pattern.equals(array_to_compare)){
+        con = new connection('\\', pattern, row-i, col-i);
+        if (XorO == 'X'){
+          X_connections.push(con); 
+          return true;
+        }
+        else{
+        }
+      }     
+    }
+  }
+  return false;
+}
 
 // cut out a 1 dimensional array from the board
 //cut types: h = horizontal, v = vertical, / = diagonal, \ = diagonal
@@ -172,13 +217,91 @@ function cut_array (type, row, col,  length){
   }
   else if (type == '/'){
     for(i = 0;i <length; i++){
-        cut_array[i] = board[row+i][col+i];
+        cut_array[i] = board[row-i][col+i];
       }
   }
   else{
     for(i = 0;i <length; i++){
-      cut_array[i] = board[row][col+i]
+      cut_array[i] = board[row+i][col+i]
     }
   }
   return cut_array;
+}
+
+function check_all(XorO,type, row,col){
+  var k;
+  var result;
+
+  for (k = 0;k < five_X_patterns.length;k++){ 
+    if (check(XorO,type,five_X_patterns[k], row, col)){
+      result = true;
+      break;
+    }
+    result  = false;
+  }
+  
+  if(!result){
+    for (k = 0;k < strong_four_X_patterns.length;k++){ 
+      if (check(XorO,type,strong_four_X_patterns[k], row, col)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  }
+
+  if(!result){
+    for (k = 0;k < weak_four_X_patterns.length;k++){ 
+      if (check(XorO,type,weak_four_X_patterns[k], row, col)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  }
+  
+  if(!result){
+    for (k = 0;k < strong_three_X_patterns.length;k++){ 
+      if (check(XorO,type,strong_three_X_patterns[k], row, col)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  }
+  
+  if(!result){
+    for (k = 0;k < weak_three_X_patterns.length;k++){ 
+      if (check(XorO,type,weak_three_X_patterns[k], row, col)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  }
+
+  if(!result){
+    for (k = 0;k < two_X_patterns.length;k++){ 
+      if (check(XorO,type, two_X_patterns[k], row, col)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  } 
+}
+
+function check(XorO,type, pattern, row, col){
+  if(type == 'h'){
+    return horizontal_check(XorO, pattern, row, col);
+  }
+  else if (type == 'v'){
+    return vertical_check(XorO, pattern, row, col);
+  } 
+  else if (type == '/'){
+    return diagonal_climb_check(XorO, pattern, row, col);
+  }
+  else{
+    return diagonal_fall_check(XorO,pattern,row,col);
+  }
 }
