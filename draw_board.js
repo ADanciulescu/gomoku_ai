@@ -135,7 +135,9 @@ function check_win(){
 function tick(){
     draw_pieces();
     check_board_connections();
-    list_X_connections();
+    update_X_score();
+    update_O_score();
+    //list_X_connections();
     if (check_win()){
         game_status.textContent = "GAME OVER"
     }

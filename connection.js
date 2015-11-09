@@ -9,16 +9,18 @@ function list_X_connections(){
 }
 
 //connection on board uniquely defined by starting board position (row,col), type, and pattern
-function connection(type, pattern, row, col){
+function connection(type, pattern, row, col, value){
   this.type = type;
   this.pattern = pattern;
   this.row = row;
   this.col = col;
+  this.value = value;
   this.print = function() {
     print_connection_string += this.type + " ";
     print_connection_string += this.pattern + " ";
     print_connection_string +=  this.row.toString() + " ";
-    print_connection_string +=  this.col.toString() + "\n"; 
+    print_connection_string +=  this.col.toString();
+    print_connection_string +=  this.value.toString() + "\n";  
     print_connections.textContent = print_connection_string;
   }
   this.draw = function() {
@@ -45,7 +47,7 @@ function connection(type, pattern, row, col){
       ctx.lineTo((this.col + this.pattern.length)*square_size , (this.row + this.pattern.length ) * square_size);
       ctx.stroke();
     }
-  ctx.strokeStyle = '#000000';
+    ctx.strokeStyle = '#000000';
   }
 }
 
