@@ -2,10 +2,16 @@ init_board();
 
 function draw_connections(){
   var i;
+  ctx.restore();
+  ctx.strokeStyle = '#ff0000';
   for(i = 0; i < X_connections.length;i++){
     X_connections[i].draw();
   }
-  ctx.save();
+  ctx.strokeStyle = '#0000ff';
+  for(i = 0; i < O_connections.length;i++){
+    O_connections[i].draw();
+  }
+  ctx.strokeStyle = '#000000';
 }
 
 function draw_columns(){
@@ -105,6 +111,7 @@ function init_board() {
     init_pieces();
     draw_columns();
     draw_rows();
+    ctx.save();
     draw_pieces();
     c.addEventListener('click', handle_click, false);
     game_status.textContent = "GAME STARTED";
@@ -133,6 +140,9 @@ function check_win(){
 }
 
 function tick(){
+    ctx.clearRect(0, 0, width, height); 
+    draw_columns();
+    draw_rows();
     draw_pieces();
     check_board_connections();
     update_X_score();

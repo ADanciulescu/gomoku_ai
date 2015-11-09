@@ -26,7 +26,6 @@ function connection(type, pattern, row, col, value){
   this.draw = function() {
 
     ctx.beginPath();
-    ctx.strokeStyle = '#ff0000';
     if(this.type == 'h'){
       ctx.moveTo(this.col*square_size,this.row*square_size + square_size/2);
       ctx.lineTo((this.col+this.pattern.length)*square_size , this.row * square_size + square_size/2);
@@ -47,7 +46,6 @@ function connection(type, pattern, row, col, value){
       ctx.lineTo((this.col + this.pattern.length)*square_size , (this.row + this.pattern.length ) * square_size);
       ctx.stroke();
     }
-    ctx.strokeStyle = '#000000';
   }
 }
 

@@ -12,20 +12,26 @@ function check_board_connections(){
       check_all('X','v', i,j);
       check_all('X','/', i,j);
       check_all('X','\\', i,j);
+      check_all('O','h', i,j);
+      check_all('O','v', i,j);
+      check_all('O','/', i,j);
+      check_all('O','\\', i,j);
     }
   }
-  remove_duplicates();
+  remove_duplicates(X_connections);
+  remove_duplicates(O_connections);
   draw_connections();
 }
 
-function remove_duplicates(){
+function remove_duplicates(con_list){
   var i = 0;
   var j = 0;
 
-  for(i = 0;i < X_connections.length; i++){
-    for(j = 0; j< X_connections.length; j++){
-      if(X_connections[i].equals(X_connections[j])){
-        X_connections.splice(j, 1);
+  for(i = 0;i < con_list.length; i++){
+    for(j = 0; j< con_list.length; j++){
+      if(con_list[i].equals(con_list[j])){
+        con_list.splice(j, 1);
+        break;
       }     
     }
   }
@@ -132,6 +138,8 @@ function horizontal_check(XorO,pattern,row,col,value){
           return true;
         }
         else{
+          O_connections.push(con); 
+          return true;       
         }
       }     
     }
@@ -152,6 +160,8 @@ function vertical_check(XorO, pattern,row,col, value){
           return true;
         }
         else{
+          O_connections.push(con); 
+          return true; 
         }
       }     
     }
@@ -173,6 +183,8 @@ function diagonal_climb_check(XorO, pattern,row,col, value){
           return true;
         }
         else{
+          O_connections.push(con);
+          return true;
         }
       }     
     }
@@ -194,6 +206,8 @@ function diagonal_fall_check(XorO, pattern,row,col, value){
           return true;
         }
         else{
+          O_connections.push(con);
+          return true;
         }
       }     
     }
@@ -232,62 +246,125 @@ function check_all(XorO,type, row,col){
   var k;
   var result;
 
-  for (k = 0;k < five_X_patterns.length;k++){ 
-    if (check(XorO,type,five_X_patterns[k], row, col, val_5)){
-      result = true;
-      break;
-    }
-    result  = false;
-  }
-  
-  if(!result){
-    for (k = 0;k < strong_four_X_patterns.length;k++){ 
-      if (check(XorO,type,strong_four_X_patterns[k], row, col, val_strong_4)){
+  if (XorO == 'X'){
+    for (k = 0;k < five_X_patterns.length;k++){ 
+      if (check(XorO,type,five_X_patterns[k], row, col, val_5)){
         result = true;
         break;
       }
       result  = false;
     }
-  }
 
-  if(!result){
-    for (k = 0;k < weak_four_X_patterns.length;k++){ 
-      if (check(XorO,type,weak_four_X_patterns[k], row, col, val_weak_4)){
-        result = true;
-        break;
+    if(!result){
+      for (k = 0;k < strong_four_X_patterns.length;k++){ 
+        if (check(XorO,type,strong_four_X_patterns[k], row, col, val_strong_4)){
+          result = true;
+          break;
+        }
+        result  = false;
       }
-      result  = false;
     }
-  }
-  
-  if(!result){
-    for (k = 0;k < strong_three_X_patterns.length;k++){ 
-      if (check(XorO,type,strong_three_X_patterns[k], row, col, val_strong_3)){
-        result = true;
-        break;
-      }
-      result  = false;
-    }
-  }
-  
-  if(!result){
-    for (k = 0;k < weak_three_X_patterns.length;k++){ 
-      if (check(XorO,type,weak_three_X_patterns[k], row, col, val_weak_3)){
-        result = true;
-        break;
-      }
-      result  = false;
-    }
-  }
 
-  if(!result){
-    for (k = 0;k < two_X_patterns.length;k++){ 
-      if (check(XorO,type, two_X_patterns[k], row, col, val_2)){
+    if(!result){
+      for (k = 0;k < weak_four_X_patterns.length;k++){ 
+        if (check(XorO,type,weak_four_X_patterns[k], row, col, val_weak_4)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < strong_three_X_patterns.length;k++){ 
+        if (check(XorO,type,strong_three_X_patterns[k], row, col, val_strong_3)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < weak_three_X_patterns.length;k++){ 
+        if (check(XorO,type,weak_three_X_patterns[k], row, col, val_weak_3)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < two_X_patterns.length;k++){ 
+        if (check(XorO,type, two_X_patterns[k], row, col, val_2)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+  }
+  else
+  {
+    for (k = 0;k < five_O_patterns.length;k++){ 
+      if (check(XorO,type,five_X_patterns[k], row, col, val_5)){
         result = true;
         break;
       }
       result  = false;
     }
+
+    if(!result){
+      for (k = 0;k < strong_four_O_patterns.length;k++){ 
+        if (check(XorO,type,strong_four_O_patterns[k], row, col, val_strong_4)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < weak_four_O_patterns.length;k++){ 
+        if (check(XorO,type,weak_four_O_patterns[k], row, col, val_weak_4)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < strong_three_O_patterns.length;k++){ 
+        if (check(XorO,type,strong_three_O_patterns[k], row, col, val_strong_3)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < weak_three_O_patterns.length;k++){ 
+        if (check(XorO,type,weak_three_O_patterns[k], row, col, val_weak_3)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+
+    if(!result){
+      for (k = 0;k < two_O_patterns.length;k++){ 
+        if (check(XorO,type, two_O_patterns[k], row, col, val_2)){
+          result = true;
+          break;
+        }
+        result  = false;
+      }
+    }
+   
   } 
 }
 
