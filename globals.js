@@ -5,13 +5,13 @@ var square_size = width/num_squares;
 
 var zeroes =  [];
 var exes = [];
-var board = [];
+var board = new Array();
 
 var c = document.getElementById("myCanvas");
 var game_status = document.getElementById("game_status");
 var ctx = c.getContext("2d");
 
-var X_turn = true;
+var X_turn = false;
 
 
 var print_connections = document.getElementById("print_connections");
@@ -22,8 +22,34 @@ var p_O_score = document.getElementById("O_score");
 
 var X_score;
 var O_score;
-var X_connections = [];
-var O_connections = [];
+var cur_score_dif = 0;
+var X_connections = new Array();
+var O_connections = new Array();
+
+var ai_row_pick;
+var ai_col_pick;
+
+//limit for rectangle of moves that ai considers
+var left_limit = num_squares;
+var right_limit = 0;
+var up_limit = num_squares;
+var down_limit = 0;
+
+function init_pieces(){
+    var i = 0;
+    var j = 0;
+    for(i=0;i<num_squares;i++){
+        zeroes[i] = [];
+        exes[i] = [];
+        board[i] = [];
+        for(j = 0; j<num_squares;j++){
+            zeroes[i][j] = 0;
+            exes[i][j] = 0;
+            board[i][j] = "_";
+        }
+    }
+    board[15][15] ='X';
+}
 
 Array.prototype.equals = function (array, strict) {
   if (!array)
@@ -58,6 +84,18 @@ function print_array(a){
   window.alert("\n");
 }
 
+function copy_array(old){
+  a = [];
+  var i = 0;
+  var j = 0;
+  for(i=0;i<num_squares;i++){
+    a[i] = [];
+    for(j = 0; j<num_squares;j++){
+      a[i][j] = old[i][j];
+    }
+  }
+  return a;
+}
 
 function total_value(list){
   var total = 0;
@@ -98,8 +136,8 @@ var two_O_patterns = [['_','O','O','_'], ['_','O','_','O','_']];
 
 var val_5 = 1000000;
 var val_strong_4 = 1000;
-var val_weak_4 = 4;
-var val_strong_3 = 4;
+var val_weak_4 = 50;
+var val_strong_3 = 8;
 var val_weak_3  = 2;
 var val_2 = 2;
 

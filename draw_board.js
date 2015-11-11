@@ -36,20 +36,6 @@ function draw_rows(){
     }
 }
 
-function init_pieces(){
-    var i = 0;
-    var j = 0;
-    for(i=0;i<num_squares;i++){
-        zeroes[i] = [];
-        exes[i] = [];
-        board[i] = [];
-        for(j = 0; j<num_squares;j++){
-            zeroes[i][j] = 0;
-            exes[i][j] = 0;
-            board[i][j] = "_";
-        }
-    }
-}
 
 function draw_pieces(){
     var i = 0;
@@ -92,19 +78,38 @@ function handle_click(event){
     //random 7 offset
     var x = Math.floor((event.pageX -10)/square_size);
     var y = Math.floor((event.pageY-10)/square_size);
-
-    if(X_turn){
-        board[y][x] = "X";
-        exes[y][x] = 1;
-        X_turn = false;
-
-    }
-    else{
-        board[y][x] = "O";
-        zeroes[y][x] = 1;
-        X_turn = true;
-    }
+    make_move(y,x);
     tick();
+}
+
+function make_move(y,x){  
+  
+  //update limits
+  if (y < up_limit){
+    up_limit = y;
+  }
+  if (y > down_limit){
+    down_limit = y;
+  }
+  if (x < left_limit){
+    left_limit = x;
+  }
+  if (x > right_limit){
+    right_limit = x;
+  }
+
+
+  if(X_turn){
+    board[y][x] = "X";
+    exes[y][x] = 1;
+    X_turn = false;
+
+  }
+  else{
+    board[y][x] = "O";
+    zeroes[y][x] = 1;
+    X_turn = true;
+  }
 }
 
 function init_board() {
@@ -119,36 +124,20 @@ function init_board() {
     //connections.push(test_con);
 }
 
-function check_win(){
-    var i;
-    var j;
-    var ans;
-    for(i=0;i<num_squares;i++){
-        for(j=0;j<num_squares;j++){
-            if(board[i][j] == 'X'){
-                ans = check_for_pattern(['X','X','X','X','X'],'X',j,i)
-            }
-            else if(board[i][j] == 'O') {
-                ans = check_for_pattern(['O', 'O', 'O', 'O', 'O'], 'O', j, i)
-            }
-            if(ans){
-                return true;
-            }
-        }
-    }
-
-}
-
 function tick(){
-    ctx.clearRect(0, 0, width, height); 
-    draw_columns();
-    draw_rows();
-    draw_pieces();
-    check_board_connections();
-    update_X_score();
-    update_O_score();
-    //list_X_connections();
-    if (check_win()){
-        game_status.textContent = "GAME OVER"
-    }
+
+  if(X_turn){
+    ai_pick_move();
+    make_move(ai_row_pick, ai_col_pick);
+  }
+
+  ctx.clearRect(0, 0, width, height); 
+  draw_columns();
+  draw_rows();
+  draw_pieces();
+  check_board_connections(board, X_connections, O_connections);
+  draw_connections();
+  update_X_score();
+  update_O_score();
+  cur_score_dif = X_score - O_score; 
 }
