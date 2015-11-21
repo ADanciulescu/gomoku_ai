@@ -28,6 +28,7 @@ var O_connections = new Array();
 
 var ai_row_pick;
 var ai_col_pick;
+var ai_moves = 1;
 
 //limit for rectangle of moves that ai considers
 var left_limit = num_squares;

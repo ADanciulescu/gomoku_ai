@@ -38,24 +38,6 @@ function remove_duplicates(con_list){
   }
 }
 
-function find_first_occurance(arr, XorO){
-    var i;
-    for(i=0; i<arr.length; i++){
-        if (arr[i] == XorO) {
-            return i;
-        }
-    }
-}
-
-function find_last_occurance(arr, XorO){
-    var i;
-    for(i=arr.length-1; i>=0; i--){
-        if (arr[i] == XorO) {
-            return i;
-        }
-    }
-}
-
 //checks if the symbol at col,row is part of the pattern
 function horizontal_check(board_state, X_cons, O_cons, XorO,pattern,row,col,value){
   var i;
