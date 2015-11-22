@@ -23,7 +23,8 @@ function ai_pick_move(){
 function find_best_move(hypo_board,prev_score, moves, XorO){
   var best_val_diff = -10000;
   var best_choice_list = [];
-  var local_val_diff = 0;
+  best_choice_list.length = 0;
+  var local_val_diff;
 
   var i;
   var j;
@@ -36,9 +37,11 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
           hypo_board[i][j] = XorO;
           //difference in standing between situation before move and after move
           if(XorO == 'X'){
+            // should be positive since hypo_board should have higher score than prev_score
             local_val_diff = eval_board(hypo_board) - prev_score;
           }
           else{
+            //since it is O's turn, hypo_board < prev_scor so again local_val_diff is positivee
             local_val_diff = prev_score - eval_board(hypo_board);
           }
           if (local_val_diff> best_val_diff){
@@ -70,7 +73,7 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
           hypo_prev_score = eval_board(hypo_board);
           best_next_choice = find_best_move(hypo_board, hypo_prev_score, moves-1, hypo_XorO);
 
-
+          //set hypo board best choice calculated recursively
           hypo_board[best_next_choice.row, best_next_choice.col] = (XorO == 'X' ? 'O' : 'X');
 
           if(XorO == 'X'){

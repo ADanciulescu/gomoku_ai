@@ -8,16 +8,18 @@ function check_board_connections(board_state, X_cons, O_cons){
   X_cons.length = 0;
   O_cons.length = 0;
 
-  for (i = 0; i < num_squares; i++){
-    for(j=0; j < num_squares; j++){
-      check_all(board_state, X_cons, O_cons,'X','h', i,j);
-      check_all(board_state, X_cons, O_cons,'X','v', i,j);
-      check_all(board_state, X_cons, O_cons,'X','/', i,j);
-      check_all(board_state, X_cons, O_cons,'X','\\', i,j);
-      check_all(board_state, X_cons, O_cons,'O','h', i,j);
-      check_all(board_state, X_cons, O_cons,'O','v', i,j);
-      check_all(board_state, X_cons, O_cons,'O','/', i,j);
-      check_all(board_state, X_cons, O_cons,'O','\\', i,j);
+  for (i = (up_limit - 1); i < (down_limit + 1); i++){
+    for(j= (left_limit - 1); j < (right_limit + 1); j++){
+      if(board_state[i][j] != '_'){
+        check_all(board_state, X_cons, O_cons,'X','h', i,j);
+        check_all(board_state, X_cons, O_cons,'X','v', i,j);
+        check_all(board_state, X_cons, O_cons,'X','/', i,j);
+        check_all(board_state, X_cons, O_cons,'X','\\', i,j);
+        check_all(board_state, X_cons, O_cons,'O','h', i,j);
+        check_all(board_state, X_cons, O_cons,'O','v', i,j);
+        check_all(board_state, X_cons, O_cons,'O','/', i,j);
+        check_all(board_state, X_cons, O_cons,'O','\\', i,j);
+      }
     }
   }
   remove_duplicates(X_cons);

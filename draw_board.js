@@ -117,27 +117,36 @@ function init_board() {
     draw_columns();
     draw_rows();
     ctx.save();
+    // initial X move
+    make_move(15,15);
     draw_pieces();
     c.addEventListener('click', handle_click, false);
-    game_status.textContent = "GAME STARTED";
-    //var test_con = new connection('h', ['X', 'X'], 2 , 3);
-    //connections.push(test_con);
 }
 
 function tick(){
-
+  update_cons_score();
+  redraw();
   if(X_turn){
     ai_pick_move();
     make_move(ai_row_pick, ai_col_pick);
   }
+  update_cons_score();
+  redraw();
 
+}
+
+function update_cons_score(){
+  check_board_connections(board, X_connections, O_connections);
+  update_X_score();
+  update_O_score();
+  cur_score_dif = X_score - O_score;  
+}
+
+function redraw(){ 
   ctx.clearRect(0, 0, width, height); 
   draw_columns();
   draw_rows();
   draw_pieces();
-  check_board_connections(board, X_connections, O_connections);
   draw_connections();
-  update_X_score();
-  update_O_score();
-  cur_score_dif = X_score - O_score; 
 }
+

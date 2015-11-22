@@ -11,7 +11,7 @@ var c = document.getElementById("myCanvas");
 var game_status = document.getElementById("game_status");
 var ctx = c.getContext("2d");
 
-var X_turn = false;
+var X_turn = true;
 
 
 var print_connections = document.getElementById("print_connections");
@@ -28,7 +28,7 @@ var O_connections = new Array();
 
 var ai_row_pick;
 var ai_col_pick;
-var ai_moves = 1;
+var ai_moves = 2;
 
 //limit for rectangle of moves that ai considers
 var left_limit = num_squares;
@@ -49,7 +49,6 @@ function init_pieces(){
             board[i][j] = "_";
         }
     }
-    board[15][15] ='X';
 }
 
 Array.prototype.equals = function (array, strict) {
@@ -137,8 +136,8 @@ var two_O_patterns = [['_','O','O','_'], ['_','O','_','O','_']];
 
 var val_5 = 1000000;
 var val_strong_4 = 1000;
-var val_weak_4 = 50;
+var val_weak_4 = 8;
 var val_strong_3 = 8;
-var val_weak_3  = 2;
+var val_weak_3  = 4;
 var val_2 = 2;
 
