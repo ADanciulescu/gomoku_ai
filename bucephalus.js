@@ -1,5 +1,6 @@
 
 
+
 var actual_left_limit;
 var actual_right_limit;
 var actual_up_limit;
@@ -67,14 +68,14 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
     var hypo_prev_score;
     for(i = actual_up_limit; i <= actual_down_limit; i++){
       for(j = actual_left_limit; j <= actual_right_limit; j++){
-        if (board[i][j] == '_'){
+        if (hypo_board[i][j] == '_'){
           hypo_board[i][j] = XorO;
           hypo_XorO = (XorO == 'X' ? 'O' : 'X');
           hypo_prev_score = eval_board(hypo_board);
           best_next_choice = find_best_move(hypo_board, hypo_prev_score, moves-1, hypo_XorO);
 
           //set hypo board best choice calculated recursively
-          hypo_board[best_next_choice.row, best_next_choice.col] = (XorO == 'X' ? 'O' : 'X');
+          hypo_board[best_next_choice.row][best_next_choice.col] = (XorO == 'X' ? 'O' : 'X');
 
           if(XorO == 'X'){
             local_val_diff = eval_board(hypo_board) - prev_score;
@@ -93,7 +94,7 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
             c = new choice(i,j,local_val_diff);
             best_choice_list.push(c);
           }
-          hypo_board[best_next_choice.row, best_next_choice.col] = '_';
+          hypo_board[best_next_choice.row][best_next_choice.col] = '_';
           hypo_board[i][j] = '_';          
         }
       }
