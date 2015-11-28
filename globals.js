@@ -6,6 +6,7 @@ var square_size = width/num_squares;
 var zeroes =  [];
 var exes = [];
 var board = new Array();
+var board_cons = new Array();
 
 var c = document.getElementById("myCanvas");
 var game_status = document.getElementById("game_status");
@@ -48,10 +49,12 @@ function init_pieces(){
         zeroes[i] = [];
         exes[i] = [];
         board[i] = [];
+        board_cons[i] = [];
         for(j = 0; j<num_squares;j++){
             zeroes[i][j] = 0;
             exes[i][j] = 0;
             board[i][j] = "_";
+            board_cons[i][j] = [];
         }
     }
 }
@@ -102,12 +105,33 @@ function copy_array(old){
   return a;
 }
 
+function copy_board_cons(old){
+  var a = [];
+  var i;
+  var j;
+  var k;
+
+  for (i=0;i<num_squares;i++){
+    a[i] = []; 
+    for(j = 0; j<num_squares;j++){
+      a[i][j] = [];
+      for (k=0;k<old[i][j].length; k++){
+        var c = new index_con(old[i][j][k].index, old[i][j][k].XorO);
+        a[i][j].push(c);
+      }
+    }
+  }
+  return a;
+}
+
 function total_value(list){
   var total = 0;
   var i;
 
   for(i = 0;i<list.length;i++){
-    total += list[i].value;
+    if (list[i].valid == true){
+      total += list[i].value;
+    }
   }
   return total;
 }

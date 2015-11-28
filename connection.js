@@ -9,12 +9,13 @@ function list_X_connections(){
 }
 
 //connection on board uniquely defined by starting board position (row,col), type, and pattern
-function connection(type, pattern, row, col, value){
+function connection(type, pattern, row, col, value, valid){
   this.type = type;
   this.pattern = pattern;
   this.row = row;
   this.col = col;
   this.value = value;
+  this.valid = valid;
   this.print = function() {
     print_connection_string += this.type + " ";
     print_connection_string += this.pattern + " ";
@@ -47,6 +48,10 @@ function connection(type, pattern, row, col, value){
       ctx.stroke();
     }
   }
+}
+
+function copy_con(old){
+  //var a = new connection(old.)
 }
 
 connection.prototype.equals = function (con) {

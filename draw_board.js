@@ -99,18 +99,19 @@ function make_move(y,x){
   }
   set_actual_limits();
 
-
+  
   if(X_turn){
     board[y][x] = "X";
-    exes[y][x] = 1;
     X_turn = false;
 
   }
   else{
     board[y][x] = "O";
-    zeroes[y][x] = 1;
     X_turn = true;
   }
+  
+  check_square_connections(y, x, board, board_cons[y][x], X_connections, O_connections);
+
 }
 
 function init_board() {
@@ -137,7 +138,6 @@ function tick(){
 }
 
 function update_cons_score(){
-  check_board_connections(board, X_connections, O_connections);
   update_X_score();
   update_O_score();
   cur_score_dif = X_score - O_score;  

@@ -3,12 +3,11 @@
 
 
 function ai_pick_move(){
-  var hypo_board = [];
+
   set_actual_limits();
-  hypo_board = copy_array(board);
   var i;
   var j;
-  var ai_choice = find_best_move(hypo_board, cur_score_dif, ai_moves, 'X');
+  var ai_choice = find_best_move(board,board_cons, X_connections, O_connections, cur_score_dif, ai_moves, 'X');
   ai_row_pick = ai_choice.row;
   ai_col_pick = ai_choice.col;
 }
@@ -17,7 +16,13 @@ function ai_pick_move(){
 //INPUTS: Board state, score of board_state before move,  # moves to look ahead, whose turn it is
 //OUTPUT: Best Choice
 //ASSUMPTIONS: Limits are not readjusted(best move is within existing limits
-function find_best_move(hypo_board,prev_score, moves, XorO){
+function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, prev_score, moves, XorO){
+ 
+  var hypo_board = jQuery.extend(true, [], old_board);
+  var hypo_board_cons = jQuery.extend(true, [], old_board_cons); 
+  var hypo_X_cons = jQuery.extend(true, [], old_X_cons);
+  var hypo_O_cons = jQuery.extend(true, [], old_O_cons);
+  
   var best_val_diff = -10000;
   var best_choice_list = [];
   best_choice_list.length = 0;
@@ -32,14 +37,15 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
       for(j = actual_left_limit; j <= actual_right_limit; j++){
         if (hypo_board[i][j] == '_'){
           hypo_board[i][j] = XorO;
+          check_square_connections(i,j, hypo_board, hypo_board_cons[i][j], hypo_X_cons, hypo_O_cons);
           //difference in standing between situation before move and after move
           if(XorO == 'X'){
             // should be positive since hypo_board should have higher score than prev_score
-            local_val_diff = eval_board(hypo_board) - prev_score;
+            local_val_diff = eval_score(hypo_X_cons, hypo_O_cons) - prev_score;
           }
           else{
             //since it is O's turn, hypo_board < prev_scor so again local_val_diff is positivee
-            local_val_diff = prev_score - eval_board(hypo_board);
+            local_val_diff = prev_score - eval_score(hypo_X_cons, hypo_O_cons);
           }
           if (local_val_diff> best_val_diff){
             best_val_diff = local_val_diff;
@@ -51,8 +57,6 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
             c = new choice(i,j,local_val_diff);
             best_choice_list.push(c);
           }
-          //undo move
-          hypo_board[i][j] = '_';
         }
       }
     }
@@ -66,18 +70,21 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
       for(j = actual_left_limit; j <= actual_right_limit; j++){
         if (hypo_board[i][j] == '_'){
           hypo_board[i][j] = XorO;
+          check_square_connections(i,j, hypo_board, hypo_board_cons[i][j], hypo_X_cons, hypo_O_cons);
+          
           hypo_XorO = (XorO == 'X' ? 'O' : 'X');
-          hypo_prev_score = eval_board(hypo_board);
-          best_next_choice = find_best_move(hypo_board, hypo_prev_score, moves-1, hypo_XorO);
+          hypo_prev_score = eval_score(hypo_X_cons, hypo_O_cons);
+          best_next_choice = find_best_move(hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons,  hypo_prev_score, moves-1, hypo_XorO);
 
           //set hypo board best choice calculated recursively
           hypo_board[best_next_choice.row][best_next_choice.col] = (XorO == 'X' ? 'O' : 'X');
+          check_square_connections(i,j, hypo_board, hypo_board_cons[i][j], hypo_X_cons, hypo_O_cons);
 
           if(XorO == 'X'){
-            local_val_diff = eval_board(hypo_board) - prev_score;
+            local_val_diff =  eval_score(hypo_X_cons, hypo_O_cons) - prev_score;
           }
           else{
-            local_val_diff = prev_score - eval_board(hypo_board);
+            local_val_diff = prev_score -  eval_score(hypo_X_cons, hypo_O_cons);
           }
 
           if (local_val_diff> best_val_diff){
@@ -90,8 +97,6 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
             c = new choice(i,j,local_val_diff);
             best_choice_list.push(c);
           }
-          hypo_board[best_next_choice.row][best_next_choice.col] = '_';
-          hypo_board[i][j] = '_';          
         }
       }
     }
@@ -100,10 +105,7 @@ function find_best_move(hypo_board,prev_score, moves, XorO){
 }
 
 //return score diff of cur_board from X perspective
-function eval_board(hypo_board){
-  hypo_X_cons = [];
-  hypo_O_cons = [];
-  check_board_connections(hypo_board, hypo_X_cons, hypo_O_cons);
+function eval_score(hypo_X_cons, hypo_O_cons){
   return total_value(hypo_X_cons) - total_value(hypo_O_cons);
 }
 
