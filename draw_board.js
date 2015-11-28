@@ -97,6 +97,7 @@ function make_move(y,x){
   if (x > right_limit){
     right_limit = x;
   }
+  set_actual_limits();
 
 
   if(X_turn){

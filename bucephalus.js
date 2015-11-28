@@ -1,10 +1,6 @@
 
 
 
-var actual_left_limit;
-var actual_right_limit;
-var actual_up_limit;
-var actual_down_limit;
 
 function ai_pick_move(){
   var hypo_board = [];
@@ -112,32 +108,3 @@ function eval_board(hypo_board){
 }
 
 
-function set_actual_limits(){
-  if(left_limit-2 >= 0){
-    actual_left_limit = left_limit-2;
-  }
-  else{
-    actual_left_limit = 0;
-  }
-
-  if(right_limit + 2 < 30){
-    actual_right_limit = right_limit + 2;
-  }
-  else{
-    actual_right_limit = 29;
-  }
-
-  if(up_limit-2 >= 0){
-    actual_up_limit = up_limit-2;
-  }
-  else{
-    actual_up_limit = 0;
-  }
-
-  if(down_limit + 2 < 30){
-    actual_down_limit = down_limit + 2;
-  }
-  else{
-    actual_down_limit = 29;
-  }
-}

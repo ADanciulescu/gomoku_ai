@@ -36,6 +36,11 @@ var right_limit = 0;
 var up_limit = num_squares;
 var down_limit = 0;
 
+var actual_left_limit;
+var actual_right_limit;
+var actual_up_limit;
+var actual_down_limit;
+
 function init_pieces(){
     var i = 0;
     var j = 0;
@@ -141,3 +146,33 @@ var val_strong_3 = 8;
 var val_weak_3  = 4;
 var val_2 = 2;
 
+
+function set_actual_limits(){
+  if(left_limit-2 >= 0){
+    actual_left_limit = left_limit-2;
+  }
+  else{
+    actual_left_limit = 0;
+  }
+
+  if(right_limit + 2 < 30){
+    actual_right_limit = right_limit + 2;
+  }
+  else{
+    actual_right_limit = 29;
+  }
+
+  if(up_limit-2 >= 0){
+    actual_up_limit = up_limit-2;
+  }
+  else{
+    actual_up_limit = 0;
+  }
+
+  if(down_limit + 2 < 30){
+    actual_down_limit = down_limit + 2;
+  }
+  else{
+    actual_down_limit = 29;
+  }
+}
