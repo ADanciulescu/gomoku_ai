@@ -57,6 +57,12 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, prev_s
             c = new choice(i,j,local_val_diff);
             best_choice_list.push(c);
           }
+         
+           //undo moves
+           hypo_board[i][j] = '_';
+           restore(hypo_board_cons, old_board_cons, i, j);
+           hypo_X_cons = jQuery.extend(true, [], old_X_cons);
+           hypo_O_cons = jQuery.extend(true, [], old_O_cons);
         }
       }
     }
@@ -97,6 +103,15 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, prev_s
             c = new choice(i,j,local_val_diff);
             best_choice_list.push(c);
           }
+           //undo moves
+           hypo_board[i][j] = '_';
+           hypo_board[best_next_choice.row][best_next_choice.col] = '_';
+           
+           restore(hypo_board_cons, old_board_cons, best_next_choice.row, best_next_choice.col);
+           restore(hypo_board_cons, old_board_cons, i, j);
+           
+           hypo_X_cons = jQuery.extend(true, [], old_X_cons);
+           hypo_O_cons = jQuery.extend(true, [], old_O_cons);
         }
       }
     }
@@ -109,4 +124,22 @@ function eval_score(hypo_X_cons, hypo_O_cons){
   return total_value(hypo_X_cons) - total_value(hypo_O_cons);
 }
 
+//restore all board_cons around point row,col
+function restore(b_cons, old_b_cons, row, col){
+  var i;
+  for (i = -3; i < 4; i++){
+    //restore v 
+    b_cons[row + i][col] = jQuery.extend(true, [], old_b_cons[row+i][col]);
+    
+    //restore h
+    b_cons[row][col+i] = jQuery.extend(true, [], old_b_cons[row][col+i]);
 
+    
+    //restore /
+    b_cons[row+i][col+i] = jQuery.extend(true, [], old_b_cons[row+i][col+i]);
+    
+    //restore \
+    b_cons[row-i][col+i] = jQuery.extend(true, [], old_b_cons[row-i][col+i]);
+  }
+    
+}
