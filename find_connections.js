@@ -9,14 +9,10 @@ function check_square_connections(i, j, board_state, con_array, X_cons, O_cons){
   // reset this particular square's connection links
   con_array[i][j].length = 0;
 
-  check_all(board_state, X_cons, O_cons,'X','h', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'X','v', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'X','/', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'X','\\', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'O','h', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'O','v', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'O','/', i,j,con_array);
-  check_all(board_state, X_cons, O_cons,'O','\\', i,j,con_array);
+  check_all(board_state, X_cons, O_cons,'h', i,j,con_array);
+  check_all(board_state, X_cons, O_cons,'v', i,j,con_array);
+  check_all(board_state, X_cons, O_cons,'/', i,j,con_array);
+  check_all(board_state, X_cons, O_cons,'\\', i,j,con_array);
 }
 
 //invalidate all old_connections that square was part of
@@ -82,7 +78,7 @@ function horizontal_check(board_state, X_cons, O_cons, XorO,pattern,row,col,valu
     // ____X_
     var array_to_compare;
 
-    if ((pattern[i] == XorO) && ( pattern[i] == board_state[row][col])){
+    if ( pattern[i] == board_state[row][col]){
       array_to_compare = cut_array(board_state, X_cons, O_cons, 'h', row, col-i,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('h', pattern, row, col-i, value, true);
@@ -106,7 +102,7 @@ function vertical_check(board_state, X_cons, O_cons, XorO, pattern,row,col, valu
   var i;
   for (i=0;i<pattern.length; i++){
     var array_to_compare;
-    if ((pattern[i] == XorO) && ( pattern[i] == board_state[row][col])){
+    if ( pattern[i] == board_state[row][col]){
       array_to_compare = cut_array(board_state, X_cons, O_cons, 'v', row-i, col,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('v', pattern, row-i, col, value, true);
@@ -131,7 +127,7 @@ function diagonal_climb_check(board_state, X_cons, O_cons, XorO, pattern,row,col
   var i;
   for (i=0;i<pattern.length; i++){
     var array_to_compare;
-    if ((pattern[i] == XorO) && ( pattern[i] == board_state[row][col])){
+    if (pattern[i] == board_state[row][col]){
       array_to_compare = cut_array(board_state, X_cons, O_cons,'/', row+i, col-i,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('/', pattern, row+i, col-i, value, true);
@@ -156,7 +152,7 @@ function diagonal_fall_check(board_state, X_cons, O_cons, XorO, pattern,row,col,
   var i;
   for (i=0;i<pattern.length; i++){
     var array_to_compare;
-    if ((pattern[i] == XorO) && ( pattern[i] == board_state[row][col])){
+    if ( pattern[i] == board_state[row][col]){
       array_to_compare = cut_array(board_state, X_cons, O_cons, '\\', row-i, col-i,  pattern.length);
       if(pattern.equals(array_to_compare)){
         con = new connection('\\', pattern, row-i, col-i , value, true);
@@ -203,12 +199,12 @@ function cut_array (board_state, X_cons, O_cons, type, row, col,  length){
   return cut_array;
 }
 
-function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
+function check_all(board_state, X_cons, O_cons,type, row,col,con_array){
   var k;
-  var result;
+  var result = false;
 
   for (k = 0;k < five_X_patterns.length;k++){ 
-    if (check(board_state, X_cons, O_cons, XorO,type,five_X_patterns[k], row, col, val_5,con_array)){
+    if (check(board_state, X_cons, O_cons, 'X',type,five_X_patterns[k], row, col, val_5,con_array)){
       result = true;
       break;
     }
@@ -217,7 +213,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < strong_four_X_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons, XorO,type,strong_four_X_patterns[k], row, col, val_strong_4,con_array)){
+      if (check(board_state, X_cons, O_cons, 'X',type,strong_four_X_patterns[k], row, col, val_strong_4,con_array)){
         result = true;
         break;
       }
@@ -227,7 +223,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < weak_four_X_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons, XorO,type,weak_four_X_patterns[k], row, col, val_weak_4,con_array)){
+      if (check(board_state, X_cons, O_cons, 'X',type,weak_four_X_patterns[k], row, col, val_weak_4,con_array)){
         result = true;
         break;
       }
@@ -237,7 +233,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < strong_three_X_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons, XorO,type,strong_three_X_patterns[k], row, col, val_strong_3,con_array)){
+      if (check(board_state, X_cons, O_cons, 'X',type,strong_three_X_patterns[k], row, col, val_strong_3,con_array)){
         result = true;
         break;
       }
@@ -247,7 +243,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < weak_three_X_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons, XorO,type,weak_three_X_patterns[k], row, col, val_weak_3,con_array)){
+      if (check(board_state, X_cons, O_cons, 'X',type,weak_three_X_patterns[k], row, col, val_weak_3,con_array)){
         result = true;
         break;
       }
@@ -257,15 +253,18 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < two_X_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons, XorO,type, two_X_patterns[k], row, col, val_2,con_array)){
+      if (check(board_state, X_cons, O_cons, 'X',type, two_X_patterns[k], row, col, val_2,con_array)){
           result = true;
           break;
       }
       result  = false;
     }
   }
+  
+  result = false;
+
   for (k = 0;k < five_O_patterns.length;k++){ 
-    if (check(board_state, X_cons, O_cons, XorO,type,five_X_patterns[k], row, col, val_5,con_array)){
+    if (check(board_state, X_cons, O_cons, 'O',type,five_O_patterns[k], row, col, val_5,con_array)){
       result = true;
       break;
     }
@@ -274,7 +273,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < strong_four_O_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons,XorO,type,strong_four_O_patterns[k], row, col, val_strong_4,con_array)){
+      if (check(board_state, X_cons, O_cons,'O',type,strong_four_O_patterns[k], row, col, val_strong_4,con_array)){
         result = true;
         break;
       }
@@ -284,7 +283,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
   if(!result){
     for (k = 0;k < weak_four_O_patterns.length;k++){ 
-      if (check(board_state, X_cons, O_cons, XorO,type,weak_four_O_patterns[k], row, col, val_weak_4,con_array)){
+      if (check(board_state, X_cons, O_cons, 'O',type,weak_four_O_patterns[k], row, col, val_weak_4,con_array)){
         result = true;
           break;
         }
@@ -294,7 +293,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
     if(!result){
       for (k = 0;k < strong_three_O_patterns.length;k++){ 
-        if (check(board_state, X_cons, O_cons, XorO,type,strong_three_O_patterns[k], row, col, val_strong_3,con_array)){
+        if (check(board_state, X_cons, O_cons, 'O',type,strong_three_O_patterns[k], row, col, val_strong_3,con_array)){
           result = true;
           break;
         }
@@ -304,7 +303,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
     if(!result){
       for (k = 0;k < weak_three_O_patterns.length;k++){ 
-        if (check(board_state, X_cons, O_cons, XorO,type,weak_three_O_patterns[k], row, col, val_weak_3,con_array)){
+        if (check(board_state, X_cons, O_cons, 'O',type,weak_three_O_patterns[k], row, col, val_weak_3,con_array)){
           result = true;
           break;
         }
@@ -314,7 +313,7 @@ function check_all(board_state, X_cons, O_cons, XorO,type, row,col,con_array){
 
     if(!result){
       for (k = 0;k < two_O_patterns.length;k++){ 
-        if (check(board_state, X_cons, O_cons,XorO,type, two_O_patterns[k], row, col, val_2,con_array)){
+        if (check(board_state, X_cons, O_cons, 'O',type, two_O_patterns[k], row, col, val_2,con_array)){
           result = true;
           break;
         }

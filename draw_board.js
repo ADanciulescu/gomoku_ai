@@ -128,13 +128,14 @@ function init_board() {
 function tick(){
   update_cons_score();
   redraw();
-  if(X_turn){
-    ai_pick_move();
-    make_move(ai_row_pick, ai_col_pick);
+  if (ai_on){
+    if(X_turn){
+      ai_pick_move();
+      make_move(ai_row_pick, ai_col_pick);
+    }
+    update_cons_score();
+    redraw();
   }
-  update_cons_score();
-  redraw();
-
 }
 
 function update_cons_score(){
