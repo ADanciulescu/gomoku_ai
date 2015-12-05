@@ -110,7 +110,7 @@ function make_move(y,x){
     X_turn = true;
   }
   
-  check_square_connections(y, x, board, board_cons[y][x], X_connections, O_connections);
+  check_square_connections(y, x, board, board_cons, X_connections, O_connections);
 
 }
 
