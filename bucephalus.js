@@ -42,16 +42,9 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
           check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
           
           //evaluate current score from perspective of X or O
-          if(XorO == 'X'){
-            // should be positive since eval_score is from X's perspective 
-            local_val_diff = eval_score(hypo_X_cons, hypo_O_cons);
-          }
-          else{
-            //should be postive after negation 
-            local_val_diff = -eval_score(hypo_X_cons, hypo_O_cons);
-          }
+          local_val_diff = adjust_perspective(eval_score(hypo_X_cons, hypo_O_cons), XorO);
 
-          var actual_val_diff = (XorO == 'X' ? local_val_diff : -local_val_diff);
+          var actual_val_diff = adjust_perspective(local_val_diff, XorO);
           if (local_val_diff> best_val_diff){
             best_val_diff = local_val_diff;
             
@@ -91,6 +84,16 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
           hypo_board[i][j] = XorO;
           check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
           
+          //endgame short circuit
+          var temp_val_diff = adjust_perspective(eval_score(hypo_X_cons, hypo_O_cons), XorO);  
+          if (temp_val_diff > 500){ 
+            hypo_board[i][j] = '_';
+            check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+            
+            return new choice(i,j,temp_val_diff);
+          }
+
+
           hypo_XorO = (XorO == 'X' ? 'O' : 'X');
           best_next_choice = find_best_move(hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons, moves-1, hypo_XorO);
 
@@ -98,14 +101,9 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
           //hypo_board[best_next_choice.row][best_next_choice.col] = (XorO == 'X' ? 'O' : 'X');
           //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
 
-          if(XorO == 'X'){
-            local_val_diff =  best_next_choice.val_diff;
-          }
-          else{
-            local_val_diff = -best_next_choice.val_diff;
-          }
-
-          var actual_val_diff = (XorO == 'X' ? local_val_diff : -local_val_diff);
+          local_val_diff = adjust_perspective(best_next_choice.val_diff, XorO);
+          var actual_val_diff = adjust_perspective(local_val_diff, XorO);
+          
           if (local_val_diff> best_val_diff){
               best_val_diff = local_val_diff;
               c = new choice(i,j,actual_val_diff);
@@ -139,6 +137,10 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
 //return score diff of cur_board from X perspective
 function eval_score(hypo_X_cons, hypo_O_cons){
   return total_value(hypo_X_cons) - total_value(hypo_O_cons);
+}
+
+function adjust_perspective (val, XorO){
+  return (XorO == 'X' ? val : -val);
 }
 
 //restore all board_cons around point row,col
