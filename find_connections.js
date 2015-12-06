@@ -242,6 +242,16 @@ function check_all(board_state, X_cons, O_cons,type, row,col,con_array){
   }
 
   if(!result){
+    for (k = 0;k < medium_three_X_patterns.length;k++){ 
+      if (check(board_state, X_cons, O_cons, 'X',type,medium_three_X_patterns[k], row, col, val_medium_3,con_array)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  }
+
+  if(!result){
     for (k = 0;k < weak_three_X_patterns.length;k++){ 
       if (check(board_state, X_cons, O_cons, 'X',type,weak_three_X_patterns[k], row, col, val_weak_3,con_array)){
         result = true;
@@ -288,38 +298,48 @@ function check_all(board_state, X_cons, O_cons,type, row,col,con_array){
           break;
         }
         result  = false;
-      }
     }
+  }
 
-    if(!result){
-      for (k = 0;k < strong_three_O_patterns.length;k++){ 
-        if (check(board_state, X_cons, O_cons, 'O',type,strong_three_O_patterns[k], row, col, val_strong_3,con_array)){
-          result = true;
-          break;
-        }
-        result  = false;
+  if(!result){
+    for (k = 0;k < strong_three_O_patterns.length;k++){ 
+      if (check(board_state, X_cons, O_cons, 'O',type,strong_three_O_patterns[k], row, col, val_strong_3,con_array)){
+        result = true;
+        break;
       }
+      result  = false;
     }
+  }
+ 
+  if(!result){
+    for (k = 0;k < medium_three_O_patterns.length;k++){ 
+      if (check(board_state, X_cons, O_cons, 'O',type,medium_three_O_patterns[k], row, col, val_medium_3,con_array)){
+        result = true;
+        break;
+      }
+      result  = false;
+    }
+  }
 
-    if(!result){
-      for (k = 0;k < weak_three_O_patterns.length;k++){ 
-        if (check(board_state, X_cons, O_cons, 'O',type,weak_three_O_patterns[k], row, col, val_weak_3,con_array)){
-          result = true;
-          break;
-        }
-        result  = false;
+  if(!result){
+    for (k = 0;k < weak_three_O_patterns.length;k++){ 
+      if (check(board_state, X_cons, O_cons, 'O',type,weak_three_O_patterns[k], row, col, val_weak_3,con_array)){
+        result = true;
+        break;
       }
+      result  = false;
     }
+  }
 
-    if(!result){
-      for (k = 0;k < two_O_patterns.length;k++){ 
-        if (check(board_state, X_cons, O_cons, 'O',type, two_O_patterns[k], row, col, val_2,con_array)){
-          result = true;
-          break;
-        }
-        result  = false;
+  if(!result){
+    for (k = 0;k < two_O_patterns.length;k++){ 
+      if (check(board_state, X_cons, O_cons, 'O',type, two_O_patterns[k], row, col, val_2,con_array)){
+        result = true;
+        break;
       }
+      result  = false;
     }
+  }
 }
 
 function check(board_state, X_cons, O_cons, XorO,type, pattern, row, col, value,con_array){
