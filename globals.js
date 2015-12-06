@@ -150,14 +150,14 @@ function update_O_score(){
 
 var five_X_patterns = [['X','X','X','X','X']];
 var strong_four_X_patterns = [['_','X','X','X','X','_']];
-var weak_four_X_patterns = [['O','X','X','X','X'],['X','X','X','X','O'],['X','X','_', 'X', 'X'],['X','_','X', 'X', 'X'], ['X','X','X','_','X']];
+var weak_four_X_patterns = [['O','X','X','X','X','_'],['_','X','X','X','X','O'],['X','X','_', 'X', 'X'],['X','_','X', 'X', 'X'], ['X','X','X','_','X']];
 var strong_three_X_patterns = [['_','X','X','X','_'], ['_','X','X','_','X','_'],['_','X','_', 'X', 'X', '_']];
 var weak_three_X_patterns = [['O','X','X','X','_'],['_','X','X','X','O'],['_','X','X','_','X','O'],['O','X','X','_','X','_'],['_','X','_','X','X','O'],['O','X','_','X','X','_']];
 var two_X_patterns = [['_','X','X','_'], ['_','X','_','X','_']];
 
 var five_O_patterns = [['O','O','O','O','O']];
 var strong_four_O_patterns = [['_','O','O','O','O','_']];
-var weak_four_O_patterns = [['X','O','O','O','O'],['O','O','O','O','X'],['O','O','_', 'O', 'O'],['O','_','O', 'O', 'O'], ['O','O','O','_','O']];
+var weak_four_O_patterns = [['X','O','O','O','O','_'],['_','O','O','O','O','X'],['O','O','_', 'O', 'O'],['O','_','O', 'O', 'O'], ['O','O','O','_','O']];
 var strong_three_O_patterns = [['_','O','O','O','_'], ['_','O','O','_','O','_'],['_','O','_', 'O', 'O', '_']];
 var weak_three_O_patterns = [['X','O','O','O','_'],['_','O','O','O','X'],['_','O','O','_','O','X'],['X','O','O','_','O','_'],['_','O','_','O','O','X'],['X','O','_','O','O','_']];
 var two_O_patterns = [['_','O','O','_'], ['_','O','_','O','_']];

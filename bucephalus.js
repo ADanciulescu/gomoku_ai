@@ -60,10 +60,10 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, prev_s
            hypo_board[i][j] = '_';
            //restore(hypo_board_cons, old_board_cons, i, j);
             
-           //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
-           hypo_board_cons = JSON.parse(JSON.stringify(old_board_cons));
-           hypo_X_cons = JSON.parse(JSON.stringify(old_X_cons)); 
-           hypo_O_cons = JSON.parse(JSON.stringify(old_O_cons)); 
+           check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+           //hypo_board_cons = JSON.parse(JSON.stringify(old_board_cons));
+           //hypo_X_cons = JSON.parse(JSON.stringify(old_X_cons)); 
+           //hypo_O_cons = JSON.parse(JSON.stringify(old_O_cons)); 
            //hypo_board_cons = jQuery.extend(true, [], old_board_cons);
            //hypo_X_cons = jQuery.extend(true, [], old_X_cons);
            //hypo_O_cons = jQuery.extend(true, [], old_O_cons);
@@ -109,15 +109,15 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, prev_s
           }
            //undo moves
            hypo_board[i][j] = '_';
-           //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+           check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
            hypo_board[best_next_choice.row][best_next_choice.col] = '_'; 
-           //check_square_connections(best_next_choice.row,best_next_choice.col, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+           check_square_connections(best_next_choice.row,best_next_choice.col, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
            //restore(hypo_board_cons, old_board_cons, best_next_choice.row, best_next_choice.col);
            //restore(hypo_board_cons, old_board_cons, i, j);
                        
-           hypo_board_cons = JSON.parse(JSON.stringify(old_board_cons));
-           hypo_X_cons = JSON.parse(JSON.stringify(old_X_cons)); 
-           hypo_O_cons = JSON.parse(JSON.stringify(old_O_cons)); 
+           //hypo_board_cons = JSON.parse(JSON.stringify(old_board_cons));
+           //hypo_X_cons = JSON.parse(JSON.stringify(old_X_cons)); 
+           //hypo_O_cons = JSON.parse(JSON.stringify(old_O_cons)); 
            //hypo_X_cons = jQuery.extend(true, [], old_X_cons);
            //hypo_O_cons = jQuery.extend(true, [], old_O_cons);
         }
