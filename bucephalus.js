@@ -1,7 +1,7 @@
-function ai_pick_move(){
+function ai_pick_move(moves, XorO){
 
   set_actual_limits();
-  var ai_choice = find_best_move(board,board_cons, X_connections, O_connections, ai_moves, 'X');
+  var ai_choice = find_best_move(board,board_cons, X_connections, O_connections, moves, XorO, new Number(-100000),new Number(100000));
   ai_row_pick = ai_choice.row;
   ai_col_pick = ai_choice.col;
 }
@@ -10,7 +10,7 @@ function ai_pick_move(){
 //INPUTS: Board state, score of board_state before move,  # moves to look ahead, whose turn it is
 //OUTPUT: Best Choice
 //ASSUMPTIONS: Limits are not readjusted(best move is within existing limits
-function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves, XorO){
+function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves, XorO, alpha, beta){
  
   //var hypo_board = jQuery.extend(true, [], old_board);
   //var hypo_board_cons = jQuery.extend(true, [], old_board_cons); 
@@ -25,6 +25,7 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
   var best_choice_list = [];
   best_choice_list.length = 0;
   var local_val_diff;
+  var abs_val_diff;
 
   var i;
   var j;
@@ -41,19 +42,41 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
           //update connections related to move made
           check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
           
+          abs_val_diff = eval_score(hypo_X_cons, hypo_O_cons);
           //evaluate current score from perspective of X or O
-          local_val_diff = adjust_perspective(eval_score(hypo_X_cons, hypo_O_cons), XorO);
+          local_val_diff = adjust_perspective(abs_val_diff);
 
-          var actual_val_diff = adjust_perspective(local_val_diff, XorO);
+          
           if (local_val_diff> best_val_diff){
             best_val_diff = local_val_diff;
+            c = new choice(i,j,abs_val_diff);
             
-            c = new choice(i,j,actual_val_diff);
+            //if(XorO == 'X'){
+              //if (abs_val_diff > alpha){
+                //alpha = abs_val_diff;
+                //if (alpha >= beta){
+                  //hypo_board[i][j] = '_';
+                  //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                  //return c;
+                //}
+              //}
+            //}
+            //else{
+              //if (abs_val_diff < beta){
+                //beta = abs_val_diff;
+                //if (alpha >= beta){
+                  //hypo_board[i][j] = '_';
+                  //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                  //return c;
+                //}
+              //}
+            //}
+
             best_choice_list.length = 0;
             best_choice_list.push(c);
           }
           else if(local_val_diff == best_val_diff){
-            c = new choice(i,j,actual_val_diff);
+            c = new choice(i,j,abs_val_diff);
             best_choice_list.push(c);
           }
          
@@ -82,36 +105,59 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
          
           //make move
           hypo_board[i][j] = XorO;
+          var t1_val_diff = adjust_perspective(eval_score(hypo_X_cons, hypo_O_cons), XorO);  
           check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
-          
+         
           //endgame short circuit
-          var temp_val_diff = adjust_perspective(eval_score(hypo_X_cons, hypo_O_cons), XorO);  
-          if (temp_val_diff > 500){ 
-            hypo_board[i][j] = '_';
-            check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+          //var t2_val_diff = adjust_perspective(eval_score(hypo_X_cons, hypo_O_cons), XorO);  
+          //if (t2_val_diff - t1_val_diff > 500){ 
+            //hypo_board[i][j] = '_';
+            //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
             
-            return new choice(i,j,temp_val_diff);
-          }
-
+            //return new choice(i,j,t2_val_diff);
+          //}
 
           hypo_XorO = (XorO == 'X' ? 'O' : 'X');
-          best_next_choice = find_best_move(hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons, moves-1, hypo_XorO);
+          best_next_choice = find_best_move(hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons, moves-1, hypo_XorO, alpha, beta);
 
           //set hypo board best choice calculated recursively
           //hypo_board[best_next_choice.row][best_next_choice.col] = (XorO == 'X' ? 'O' : 'X');
           //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
 
+          abs_val_diff = best_next_choice.val_diff;
           local_val_diff = adjust_perspective(best_next_choice.val_diff, XorO);
-          var actual_val_diff = adjust_perspective(local_val_diff, XorO);
           
           if (local_val_diff> best_val_diff){
               best_val_diff = local_val_diff;
-              c = new choice(i,j,actual_val_diff);
+              c = new choice(i,j,abs_val_diff);
+              
+              //if(XorO == 'X'){
+                //if (abs_val_diff > alpha){
+                  //alpha = abs_val_diff;
+                  //if (alpha >= beta){
+                    //hypo_board[i][j] = '_';
+                    //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                    //return c;
+                  //}
+                //}
+              //}
+              //else{
+                //if (abs_val_diff < beta){
+                  //beta = abs_val_diff;
+                    //if (alpha >= beta){
+                      //hypo_board[i][j] = '_';
+                      //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                      //return c;
+                    //}
+                //}
+              //}
+
+
               best_choice_list.length = 0;
               best_choice_list.push(c);
           }
           else if(local_val_diff == best_val_diff){
-            c = new choice(i,j,actual_val_diff);
+            c = new choice(i,j,abs_val_diff);
             best_choice_list.push(c);
           }
            //undo moves

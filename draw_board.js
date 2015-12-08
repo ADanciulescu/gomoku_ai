@@ -130,11 +130,16 @@ function tick(){
   redraw();
   if (ai_on){
     if(X_turn){
-      ai_pick_move();
+      ai_pick_move(2,'X');
+      make_move(ai_row_pick, ai_col_pick);
+    }
+    else{
+      ai_pick_move(2,'O');
       make_move(ai_row_pick, ai_col_pick);
     }
     update_cons_score();
     redraw();
+    tick();
   }
 }
 
