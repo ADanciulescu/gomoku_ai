@@ -29,7 +29,7 @@ var O_connections = new Array();
 
 var ai_row_pick;
 var ai_col_pick;
-var ai_moves = 3;
+var ai_moves = 4;
 var ai_on = true;
 
 //limit for rectangle of moves that ai considers

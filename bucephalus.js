@@ -51,26 +51,26 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
             best_val_diff = local_val_diff;
             c = new choice(i,j,abs_val_diff);
             
-            //if(XorO == 'X'){
-              //if (abs_val_diff > alpha){
-                //alpha = abs_val_diff;
-                //if (alpha >= beta){
-                  //hypo_board[i][j] = '_';
-                  //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
-                  //return c;
-                //}
-              //}
-            //}
-            //else{
-              //if (abs_val_diff < beta){
-                //beta = abs_val_diff;
-                //if (alpha >= beta){
-                  //hypo_board[i][j] = '_';
-                  //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
-                  //return c;
-                //}
-              //}
-            //}
+            if(XorO == 'X'){
+              if (abs_val_diff > alpha){
+                alpha = abs_val_diff;
+                if (alpha >= beta){
+                  hypo_board[i][j] = '_';
+                  check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                  return c;
+                }
+              }
+            }
+            else{
+              if (abs_val_diff < beta){
+                beta = abs_val_diff;
+                if (alpha >= beta){
+                  hypo_board[i][j] = '_';
+                  check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                  return c;
+                }
+              }
+            }
 
             best_choice_list.length = 0;
             best_choice_list.push(c);
@@ -131,26 +131,26 @@ function find_best_move(old_board,old_board_cons, old_X_cons, old_O_cons, moves,
               best_val_diff = local_val_diff;
               c = new choice(i,j,abs_val_diff);
               
-              //if(XorO == 'X'){
-                //if (abs_val_diff > alpha){
-                  //alpha = abs_val_diff;
-                  //if (alpha >= beta){
-                    //hypo_board[i][j] = '_';
-                    //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
-                    //return c;
-                  //}
-                //}
-              //}
-              //else{
-                //if (abs_val_diff < beta){
-                  //beta = abs_val_diff;
-                    //if (alpha >= beta){
-                      //hypo_board[i][j] = '_';
-                      //check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
-                      //return c;
-                    //}
-                //}
-              //}
+              if(XorO == 'X'){
+                if (abs_val_diff > alpha){
+                  alpha = abs_val_diff;
+                  if (alpha >= beta){
+                    hypo_board[i][j] = '_';
+                    check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                    return c;
+                  }
+                }
+              }
+              else{
+                if (abs_val_diff < beta){
+                  beta = abs_val_diff;
+                    if (alpha >= beta){
+                      hypo_board[i][j] = '_';
+                      check_square_connections(i,j, hypo_board, hypo_board_cons, hypo_X_cons, hypo_O_cons);
+                      return c;
+                    }
+                }
+              }
 
 
               best_choice_list.length = 0;
